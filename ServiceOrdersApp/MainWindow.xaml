@@ -4,9 +4,56 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:ServiceOrdersApp"
+        xmlns:vm="clr-namespace:ServiceOrdersApp.ViewModels"
         mc:Ignorable="d"
-        Title="MainWindow" Height="450" Width="800">
-    <Grid>
-        
+        Title="Lista de Ordenes de Servicio" Height="450" Width="800" ResizeMode="NoResize">
+    <Window.Resources>
+        <vm:MainViewModel x:Key="MainVM" />
+    </Window.Resources>
+    <Grid DataContext="{StaticResource MainVM}">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="110"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+        <Grid Grid.Row="0">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="500"/>
+                <ColumnDefinition/>
+            </Grid.ColumnDefinitions>
+
+            <Label Grid.Row="0" Content="Orden:" Width="50" Height="24" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="8,8,0,0" FontWeight="Bold" />
+            <Label Grid.Row="0" Content="" Width="50" Height="24" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="58,8,0,0" />
+            <Label Grid.Row="0" Content="Descripción:" Width="100" Height="24" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="8,32,0,0" FontWeight="Bold" />
+            <TextBlock Grid.Row="0" Text="" Width="400" Height="48" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="14,56,0,0" TextWrapping="WrapWithOverflow" />
+
+            <Button Command="{Binding SendOrdersCommand}" Grid.Column="1" Content="Enviar Ordenes..." ToolTip="Enviar Ordenes existentes al servidor" Width="120" Height="32" VerticalAlignment="Bottom" HorizontalAlignment="Right" Margin="0,0,8,8" />
+            <Button Command="{Binding CreateOrderCommand}" Grid.Column="1" Content="Nueva Orden..." ToolTip="Agregar una nueva Orden" Width="100" Height="32" VerticalAlignment="Bottom" HorizontalAlignment="Right" Margin="0,0,136,8" />
+            <Button Command="{Binding OrderListCommand}" Grid.Column="1" Content="Cargar Ordenes" ToolTip="Busca las ordenes guardadas en la Base de datos una nueva Orden" Width="100" Height="32" VerticalAlignment="Top" HorizontalAlignment="Right" Margin="0,8,8,0" />
+        </Grid>
+        <ListView Grid.Row="1"  >
+            <ListView.View>
+                <GridView>
+                    <GridViewColumn Header="Id" Width="50"/>
+                    <GridViewColumn Header="Nombre del Cliente" Width="200"/>
+                    <GridViewColumn Header="Fecha" Width="150"/>
+                    <GridViewColumn Header="Estado" Width="150"/>
+                    <GridViewColumn Width="200">
+                        <GridViewColumn.CellTemplate>
+                            <DataTemplate>
+                                <Grid>
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="100"/>
+                                        <ColumnDefinition Width="100"/>
+                                    </Grid.ColumnDefinitions>
+                                    <Button Grid.Column="0" Content="Actualizar" Width="80" HorizontalAlignment="Left" Command="{Binding DataContext.UpdateOrderCommand, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type ListView}}}" CommandParameter="{Binding DataContext, RelativeSource={RelativeSource Self}}" />
+                                    <Button Grid.Column="1" Content="Eliminar" Width="80" HorizontalAlignment="Left" Command="{Binding DataContext.DeleteOrderCommand, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type ListView}}}" CommandParameter="{Binding DataContext, RelativeSource={RelativeSource Self}}"/>
+                                </Grid>
+                            </DataTemplate>
+                        </GridViewColumn.CellTemplate>
+                    </GridViewColumn>
+                </GridView>
+            </ListView.View>
+        </ListView>
+
     </Grid>
 </Window>
