@@ -5,6 +5,10 @@ VisualStudioVersion = 17.4.33213.308
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ServiceOrdersApp", "ServiceOrdersApp\ServiceOrdersApp.csproj", "{1AB51860-3033-4DA8-BA77-953D97E274FC}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DAL", "DAL\DAL.csproj", "{0A1E4381-BB23-489A-8EDD-DB8FD5A6DEBA}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TestDB", "TestDB\TestDB.csproj", "{CC79C6B1-4B95-4117-8404-B2ADFB5042AD}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -15,6 +19,14 @@ Global
 		{1AB51860-3033-4DA8-BA77-953D97E274FC}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{1AB51860-3033-4DA8-BA77-953D97E274FC}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{1AB51860-3033-4DA8-BA77-953D97E274FC}.Release|Any CPU.Build.0 = Release|Any CPU
+		{0A1E4381-BB23-489A-8EDD-DB8FD5A6DEBA}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{0A1E4381-BB23-489A-8EDD-DB8FD5A6DEBA}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{0A1E4381-BB23-489A-8EDD-DB8FD5A6DEBA}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{0A1E4381-BB23-489A-8EDD-DB8FD5A6DEBA}.Release|Any CPU.Build.0 = Release|Any CPU
+		{CC79C6B1-4B95-4117-8404-B2ADFB5042AD}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{CC79C6B1-4B95-4117-8404-B2ADFB5042AD}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{CC79C6B1-4B95-4117-8404-B2ADFB5042AD}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{CC79C6B1-4B95-4117-8404-B2ADFB5042AD}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

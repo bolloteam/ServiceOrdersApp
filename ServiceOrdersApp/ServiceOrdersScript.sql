@@ -92,7 +92,7 @@ CREATE TABLE [dbo].[Orders](
 	[CustomerName] [nvarchar](50) NOT NULL,
 	[Description] [text] NOT NULL,
 	[CreatedAt] [datetime] NOT NULL,
-	[Status] [tinyint] NOT NULL,
+	[Status] [int] NOT NULL,
  CONSTRAINT [PK_Orders] PRIMARY KEY CLUSTERED 
 (
 	[id] ASC
