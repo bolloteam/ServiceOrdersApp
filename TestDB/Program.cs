@@ -11,9 +11,7 @@ namespace TestDB
     {
         static void Main(string[] args)
         {
-            DbConnector _db = new DbConnector();
-
-            var orders = _db.GetOrders();
+            var orders = OrderDAO.FindAll();
             foreach (var order in orders)
             {
                 Console.WriteLine(order.CustomerName);

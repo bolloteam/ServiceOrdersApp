@@ -1,4 +1,5 @@
-﻿using ServiceOrdersApp.Core.Commands;
+﻿using DAL;
+using ServiceOrdersApp.Core.Commands;
 using ServiceOrdersApp.Views;
 using System;
 using System.Linq;
@@ -10,11 +11,39 @@ namespace ServiceOrdersApp.ViewModels
 {
     public class MainViewModel : IGeneric
     {
-
         public MainViewModel()
         {
 
         }
+
+        #region Variable Declaration
+        private OrderCollection _orders = new OrderCollection();
+        private Order _currentOrder;
+
+        public OrderCollection Orders
+        {
+            get => _orders;
+            set
+            {
+                _orders = value;
+                if (value != null && value.Count > 0)
+                {
+                    CurrentOrder = value[0];
+                }
+                RaisePropertyChanged("Orders");
+                RaisePropertyChanged("CanSendOrders");
+            }
+        }
+        public Order CurrentOrder
+        {
+            get => _currentOrder;
+            set
+            {
+                _currentOrder = value;
+                RaisePropertyChanged("CurrentOrder");
+            }
+        }
+        #endregion
 
         #region OrderList
         private ICommand _orderListCommand;
@@ -32,7 +61,7 @@ namespace ServiceOrdersApp.ViewModels
 
         private void ListOrders()
         {
-            
+            Orders = OrderDAO.GetAll();
         }
         #endregion
 
@@ -49,7 +78,7 @@ namespace ServiceOrdersApp.ViewModels
         }
         private void CreateOrder()
         {
-            ShowOrderWindow();
+            ShowOrderWindow(new Order() { StatusEnum = StatusEnum.Abierto, CreatedAt = DateTime.Now });
         }
         #endregion
 
@@ -69,8 +98,9 @@ namespace ServiceOrdersApp.ViewModels
 
             if (obj != null)
             {
-                ShowOrderWindow();//Send Order ID
-                MessageBox.Show("Edit Order #N Form and sending selectedOrder");
+                CurrentOrder = (Order)obj;
+                ShowOrderWindow(CurrentOrder);//Send Order ID
+                //MessageBox.Show("Edit Order #N Form and sending selectedOrder");
             }
 
         }
@@ -92,8 +122,17 @@ namespace ServiceOrdersApp.ViewModels
         {
             if (obj != null)
             {
+                if (MessageBox.Show("Desea Eliminar la Orden?", "Advertencia", MessageBoxButton.YesNo) == MessageBoxResult.Yes)
+                {
+                    if (OrderDAO.Delete(((Order)obj).id))
+                    {
+                        MessageBox.Show("Orden Eliminada.");
+                        ListOrders();
+                    }
+                    else
+                        MessageBox.Show("Ocurrió un error al intentar guardar la orden, Consulte al administrador.");
+                }
             }
-
         }
 
         #endregion
@@ -117,15 +156,16 @@ namespace ServiceOrdersApp.ViewModels
         {
             get
             {
-                return true;
+                return Orders.Count > 0;
             }
         }
         #endregion
 
-        private void ShowOrderWindow()
+        private void ShowOrderWindow(Order order)
         {
-            var orderWindow = new OrderWindow();
+            var orderWindow = new OrderWindow(order);
             orderWindow.ShowDialog();
+            ListOrders();
         }
     }
 }

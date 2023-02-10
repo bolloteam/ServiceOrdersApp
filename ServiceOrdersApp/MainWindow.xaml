@@ -5,6 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:ServiceOrdersApp"
         xmlns:vm="clr-namespace:ServiceOrdersApp.ViewModels"
+        xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
         mc:Ignorable="d"
         Title="Lista de Ordenes de Servicio" Height="450" Width="800" ResizeMode="NoResize">
     <Window.Resources>
@@ -22,21 +23,26 @@
             </Grid.ColumnDefinitions>
 
             <Label Grid.Row="0" Content="Orden:" Width="50" Height="24" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="8,8,0,0" FontWeight="Bold" />
-            <Label Grid.Row="0" Content="" Width="50" Height="24" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="58,8,0,0" />
+            <Label Grid.Row="0" Content="{Binding CurrentOrder.id}" Width="50" Height="24" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="58,8,0,0" />
             <Label Grid.Row="0" Content="Descripción:" Width="100" Height="24" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="8,32,0,0" FontWeight="Bold" />
-            <TextBlock Grid.Row="0" Text="" Width="400" Height="48" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="14,56,0,0" TextWrapping="WrapWithOverflow" />
+            <TextBlock Grid.Row="0" Text="{Binding CurrentOrder.Description}" Width="400" Height="48" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="14,56,0,0" TextWrapping="WrapWithOverflow" />
 
             <Button Command="{Binding SendOrdersCommand}" Grid.Column="1" Content="Enviar Ordenes..." ToolTip="Enviar Ordenes existentes al servidor" Width="120" Height="32" VerticalAlignment="Bottom" HorizontalAlignment="Right" Margin="0,0,8,8" />
             <Button Command="{Binding CreateOrderCommand}" Grid.Column="1" Content="Nueva Orden..." ToolTip="Agregar una nueva Orden" Width="100" Height="32" VerticalAlignment="Bottom" HorizontalAlignment="Right" Margin="0,0,136,8" />
-            <Button Command="{Binding OrderListCommand}" Grid.Column="1" Content="Cargar Ordenes" ToolTip="Busca las ordenes guardadas en la Base de datos una nueva Orden" Width="100" Height="32" VerticalAlignment="Top" HorizontalAlignment="Right" Margin="0,8,8,0" />
+            <Button Visibility="Hidden" Command="{Binding OrderListCommand}" Grid.Column="1" Content="Cargar Ordenes" ToolTip="Busca las ordenes guardadas en la Base de datos una nueva Orden" Width="100" Height="32" VerticalAlignment="Top" HorizontalAlignment="Right" Margin="0,8,8,0" />
         </Grid>
-        <ListView Grid.Row="1"  >
+        <ListView Grid.Row="1" ItemsSource="{Binding Orders}" SelectedItem="{Binding CurrentOrder}">
+            <i:Interaction.Triggers>
+                <i:EventTrigger EventName="Loaded">
+                    <i:InvokeCommandAction Command="{Binding OrderListCommand}"/>
+                </i:EventTrigger>
+            </i:Interaction.Triggers>
             <ListView.View>
                 <GridView>
-                    <GridViewColumn Header="Id" Width="50"/>
-                    <GridViewColumn Header="Nombre del Cliente" Width="200"/>
-                    <GridViewColumn Header="Fecha" Width="150"/>
-                    <GridViewColumn Header="Estado" Width="150"/>
+                    <GridViewColumn Header="Id" Width="50" DisplayMemberBinding="{Binding id}"/>
+                    <GridViewColumn Header="Nombre del Cliente" Width="200" DisplayMemberBinding="{Binding CustomerName}"/>
+                    <GridViewColumn Header="Fecha" Width="150" DisplayMemberBinding="{Binding CreatedAt}"/>
+                    <GridViewColumn Header="Estado" Width="150" DisplayMemberBinding="{Binding StatusEnum}"/>
                     <GridViewColumn Width="200">
                         <GridViewColumn.CellTemplate>
                             <DataTemplate>

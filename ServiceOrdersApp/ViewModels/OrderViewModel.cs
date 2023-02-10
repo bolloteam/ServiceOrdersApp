@@ -7,15 +7,46 @@ using System.Threading.Tasks;
 using System.Windows.Controls;
 using System.Windows.Input;
 using System.Windows;
+using DAL;
 
 namespace ServiceOrdersApp.ViewModels
 {
     public class OrderViewModel : IGeneric
     {
-
-        public OrderViewModel()
+        private Order _original;
+        private Order _order;// = new Order();
+        private Visibility _isCreate;// = Visibility.Hidden;
+        public Order Order
         {
-
+            get => _order;
+            set
+            {
+                _order = value;
+            }
+        }
+        public Visibility IsCreate
+        {
+            get => _isCreate;
+            set
+            {
+                _isCreate = value;
+                RaisePropertyChanged("IsCreate");
+            }
+        }
+        public OrderViewModel() { }
+        public OrderViewModel(Order order)
+        {
+            _original = order;
+            Order = new Order()
+            {
+                id = order.id,
+                CustomerName = order.CustomerName,
+                Description = order.Description,
+                StatusEnum = order.StatusEnum,
+                CreatedAt = order.CreatedAt,
+                Status = order.Status
+            };
+            IsCreate = (order.id == 0)? Visibility.Hidden : Visibility.Visible;
         }
 
         #region SaveOrder
@@ -25,13 +56,19 @@ namespace ServiceOrdersApp.ViewModels
             get
             {
                 if (_saveOrderCommand == null)
-                    _saveOrderCommand = new RelayCommand(new Action(SaveOrder));
+                    _saveOrderCommand = new ParamCommand(new Action<object>(SaveOrder));
                 return _saveOrderCommand;
             }
         }
-        private void SaveOrder()
+        private void SaveOrder(object win)
         {
-            MessageBox.Show("Try Save Data");
+            string message = (Order.id == 0) ? "Order Creada Con Éxito." : "Ordern modificada con Éxito.";
+            if (OrderDAO.Save(Order))
+                MessageBox.Show(message);
+            else
+                MessageBox.Show("Ocurrió un error al intentar guardar la orden, Consulte al administrador.");
+
+            CloseWindow((Window)win);
         }
         #endregion
 
@@ -49,8 +86,8 @@ namespace ServiceOrdersApp.ViewModels
         }
         private void CancelOrder(object win)
         {
-            ((Window)win).DialogResult = true;
-            ((Window)win).Close();
+            if (PromptMessage("Desea salir sin guardar los cambios ?", "Confirmación"))
+                CloseWindow((Window)win);
         }
         private bool CanClose
         {
@@ -61,6 +98,21 @@ namespace ServiceOrdersApp.ViewModels
         }
         #endregion
 
+        private void CloseWindow(Window win)
+        {
+            win.DialogResult = true;
+            win.Close();
+        }
+
+        private bool PromptMessage(string message, string title)
+        {
+            if (MessageBox.Show(message,
+                title, MessageBoxButton.YesNo) == MessageBoxResult.Yes)
+            {
+                return true;
+            }
+            return false;
+        }
     }
 }
 

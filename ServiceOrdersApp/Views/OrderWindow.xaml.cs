@@ -1,4 +1,6 @@
-﻿using System;
+﻿using DAL;
+using ServiceOrdersApp.ViewModels;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -19,9 +21,11 @@ namespace ServiceOrdersApp.Views
     /// </summary>
     public partial class OrderWindow : Window
     {
-        public OrderWindow()
-        {
+        public OrderWindow(Order order)
+        {   
             InitializeComponent();
+            OrderViewModel vm = new OrderViewModel(order);
+            this.DataContext = vm;
         }
     }
 }

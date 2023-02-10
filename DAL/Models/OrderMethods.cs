@@ -8,14 +8,7 @@ namespace DAL
 {
     public partial class Order
     {
-        public Order()
-        {
-            this.id = 0;
-            this.CustomerName = String.Empty;
-            this.Description = String.Empty;
-            this.CreatedAt = DateTime.Now;
-            this.Status = (int)StatusEnum.Abierto;
-        }
+
         public Order(int id, string conpanyName, string description, DateTime createdAt, StatusEnum status)
         {
             this.id = id;
@@ -23,6 +16,21 @@ namespace DAL
             this.Description = description;
             this.CreatedAt = createdAt;
             this.Status = (int)status;
+        }
+        public Order()
+        {
+            this._statusEnum = (StatusEnum)Status;
+        }
+
+        private StatusEnum _statusEnum;
+        public StatusEnum StatusEnum
+        {
+            get => (StatusEnum)Status;
+            set
+            {
+                _statusEnum = value;
+                Status = (int)value;
+            }
         }
 
         public override string ToString()
