@@ -1,7 +1,9 @@
 ﻿using DAL;
+using RemoteStorage;
 using ServiceOrdersApp.Core.Commands;
 using ServiceOrdersApp.Views;
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
@@ -150,7 +152,18 @@ namespace ServiceOrdersApp.ViewModels
         }
         private void SendOrders()
         {
-            MessageBox.Show("Send Selected Order");
+            if (MessageBox.Show("¿Esta seguro que desea enviar las ordenes emitidas a archivar al servidor?, \nNota: Recuerde que este proceso eliminará las ordenes localmente", "Advertencia", MessageBoxButton.YesNo) == MessageBoxResult.Yes)
+            {
+                if (RS.SendData(OrderDAO.FindAll()))
+                {
+                    MessageBox.Show("Las Ordenes han sido enviadas a archivar correctamente.");
+                    if(!OrderDAO.ClearOrders())
+                        MessageBox.Show("Ocurrió un error al intentar eliminar las ordenes, Consulte al administrador.");
+                    ListOrders();
+                }
+                else
+                    MessageBox.Show("Ocurrió un error al intentar guardar la orden, Consulte al administrador.");
+            }
         }
         private bool CanSendOrders
         {

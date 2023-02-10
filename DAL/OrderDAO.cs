@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data.Entity;
 using System.Data.Entity.Migrations;
 using System.Linq;
 using System.Runtime.Remoting.Contexts;
@@ -44,6 +45,17 @@ namespace DAL
                     return true;
             }
             return false;
+        }
+        public static bool ClearOrders()
+        {
+            foreach (Order order in context.Orders)
+            {
+                context.Orders.Remove(order);
+            }
+            if (context.SaveChanges() > 0)
+                return true;
+            else
+                return false;
         }
     }
 }

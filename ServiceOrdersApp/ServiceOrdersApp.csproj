@@ -125,6 +125,10 @@
       <Project>{0a1e4381-bb23-489a-8edd-db8fd5a6deba}</Project>
       <Name>DAL</Name>
     </ProjectReference>
+    <ProjectReference Include="..\RemoteStorage\RemoteStorage.csproj">
+      <Project>{01128f7a-5af7-4a5b-bea2-6ede9a9d02d8}</Project>
+      <Name>RemoteStorage</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
